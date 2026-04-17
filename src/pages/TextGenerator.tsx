@@ -27,39 +27,58 @@ export default function TextGenerator() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <h1 className="text-3xl font-bold flex items-center gap-3">
+    <div className="max-w-4xl mx-auto space-y-8">
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center pt-4"
+      >
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 mb-4">
           <Type className="h-8 w-8 text-primary" />
+        </div>
+        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
           Text Generator
         </h1>
-        <p className="text-muted-foreground mt-2">Generate high-quality text content with AI</p>
+        <p className="text-muted-foreground mt-3 text-lg">
+          Generate high-quality text content with AI
+        </p>
       </motion.div>
 
-      <GeneratorCard title="Input">
-        <div className="flex gap-3 mb-4">
-          <Select value={contentType} onValueChange={setContentType}>
-            <SelectTrigger className="w-48 bg-secondary border-border">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {contentTypes.map((t) => (
-                <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <Textarea
-          placeholder="Describe what you want to generate..."
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          className="min-h-[120px] bg-secondary border-border resize-none"
-        />
-        <Button onClick={handleGenerate} disabled={isLoading || !prompt.trim()} className="mt-4 glow">
-          {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wand2 className="mr-2 h-4 w-4" />}
-          Generate
-        </Button>
-      </GeneratorCard>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+      >
+        <GeneratorCard title="Input">
+          <div className="flex flex-col items-center gap-4">
+            <Select value={contentType} onValueChange={setContentType}>
+              <SelectTrigger className="w-full sm:w-64 bg-secondary border-border">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {contentTypes.map((t) => (
+                  <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Textarea
+              placeholder="Describe what you want to generate..."
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              className="min-h-[140px] bg-secondary border-border resize-none text-center sm:text-left"
+            />
+            <Button
+              onClick={handleGenerate}
+              disabled={isLoading || !prompt.trim()}
+              size="lg"
+              className="glow w-full sm:w-auto px-8"
+            >
+              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wand2 className="mr-2 h-4 w-4" />}
+              Generate
+            </Button>
+          </div>
+        </GeneratorCard>
+      </motion.div>
 
       {result && (
         <GeneratorCard title="Result">
